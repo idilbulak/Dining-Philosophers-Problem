@@ -6,7 +6,7 @@
 /*   By: ibulak <ibulak@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/12 13:37:02 by ibulak        #+#    #+#                 */
-/*   Updated: 2022/04/12 14:08:00 by ibulak        ########   odam.nl         */
+/*   Updated: 2022/04/12 14:14:26 by ibulak        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,8 @@ void	*routine(void *ptr)
 	static int	    change = 0;
 	
     pthread_mutex_lock(&lock);
-    while (change < 10)
-	{
-		printf("thread no:%i started with argument (%i).\n", change , *(int *)ptr);
-        printf("thread is done\n");
-		change++;
-	}
+	printf("thread no:%i started with argument (%i).\n", ++change , *(int *)ptr);
+    printf("thread is done\n");
     pthread_mutex_unlock(&lock);
     return 0;
 }
@@ -40,7 +36,7 @@ int main (void)
 	j = 2;
     if (pthread_mutex_init(&lock, NULL) != 0)
         printf("Mutex init hs failed.\n");
-	while ( i <= 10)
+	while ( i < 10)
 	{
 		if ((pthread_create(&id[i], NULL, routine, &j) != 0))
             printf("Thread can't be created.\n");
