@@ -12,7 +12,8 @@ INCLUDES		=	./inc/
 AR				=	ar
 ARFLAGS			=	rcs
 
-SRCS_F			=	philo.c philo_utils.c colors.c
+SRCS_F			=	philo.c philo_utils.c get_args.c init_philo.c \
+					simulation.c simulation_utils.c death_monitor.c
 
 SRCS			= 	$(addprefix $(SRCS_DIR), $(SRCS_F))
 
@@ -34,6 +35,6 @@ all:			$(NAME)
 clean:
 	rm -f $(OBJS)
 fclean: clean
-	rm -f $(OBJS)
+	rm -f $(NAME)
 re: fclean all
 .PHONY: all clean fclean re
