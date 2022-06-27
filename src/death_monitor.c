@@ -34,7 +34,7 @@ void	*death_monitor(void *_philo)
 			pthread_mutex_lock(&(philo[i].event));
 			philo->option &= (philo->_meals <= philo[i]._meals);
 			philo_dies = (gettimeoftheday_ms() - philo[i].last_eat > philo->_time_to_die);
-			thread_mutex_unlock(&(philo[i].event));
+			// thread_mutex_unlock(&(philo[i].event));
 			if (philo_dies)
 				break ;
 			i++;

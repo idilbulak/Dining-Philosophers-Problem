@@ -24,7 +24,7 @@ typedef struct s_philo
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*event;
 	int				start;
-	int				last_eat;
+	// int				last_eat;
 	pthread_t		philo;	
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
