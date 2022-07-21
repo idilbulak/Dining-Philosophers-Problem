@@ -20,6 +20,7 @@ int	initialize(t_philo	*philo)
 		return (-1);
 	philo->is_dead = malloc(sizeof(int));
 	philo->is_dead[0] = 1;
+	philo->i = 1;
 	philo->mutex = malloc((philo->n_philos + 1) * sizeof(pthread_mutex_t));
 	if (!philo->mutex)
 		return (-1);

@@ -27,11 +27,20 @@ int	main (int argc, char** argv)
 	t_philo	*philo;
 
 	philo = malloc(sizeof(t_philo));
+	if (!philo)
+		return (-1);
 	if(parser(argc, argv, philo) == -1)
 		return(-1);
+	if (philo->n_philos == 1)
+	{
+		printf("0 1 has taken a fork\n");
+		usleep(philo->time_left * 1000);
+		printf("%lu 1 died\n", philo->time_left);
+		return (-1);
+	}
 	if(initialize(philo) == -1)
 		return(-1);
-	if(simulation(philo) == -1)
+	if(simulation(*philo) == -1)
 		return (-1);
 	destroy_mutex(philo);
 	ft_terminate(philo);

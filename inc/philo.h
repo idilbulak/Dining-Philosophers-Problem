@@ -43,14 +43,14 @@ long		gettimeofday_ms(long now);
 int			initialize(t_philo *philo);
 
 // tasks
-static void	ft_eat(t_philo *philo);
+static int	ft_eat(t_philo *philo);
 static void	ft_sleep_think(t_philo *philo);
 void		ft_tasks(t_philo *philo);
-void		death_monitor(t_philo *philo);
+bool		death_monitor(t_philo *philo);
 void		ft_print(t_philo *philo, char *str);
 
 // simulation
-int			simulation(t_philo *philo);
+int			simulation(t_philo philo);
 long		check_time(long start_time);
 void		assign_forks(t_philo *philo);
 void		*routine(void *philo);

@@ -19,7 +19,6 @@ void	assign_forks(t_philo *philo)
 
 void	*routine(void *philo)
 {
-	struct timeval	current;
 	t_philo			_philo;
 
 
@@ -36,20 +35,19 @@ void	*routine(void *philo)
 	ft_tasks(&_philo);
 }
 
-int	simulation(t_philo *philo)
+int	simulation(t_philo philo)
 {
-	philo->i = 1;
-	while (philo->i <= philo->n_philos)
+	while (philo.i <= philo.n_philos)
 	{
-		pthread_create(&philo->id[philo->i], NULL, routine, philo);
+		pthread_create(&philo.id[philo.i], NULL, routine, &philo);
 		usleep(1000);
-		philo->i++;
+		philo.i++;
 	}
-	philo->i = 1;
-	while (philo->i <= philo->n_philos)
+	philo.i = 1;
+	while (philo.i <= philo.n_philos)
 	{
-		pthread_join(philo->id[philo->i], NULL);
-		philo->i++;
+		pthread_join(philo.id[philo.i], NULL);
+		philo.i++;
 	}
 	return (1);
 }
