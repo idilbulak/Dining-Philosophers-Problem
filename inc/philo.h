@@ -14,50 +14,48 @@
 
 typedef struct s_philo
 {
-	int		_philos;
-	int		_time_to_die;
-	int		_time_to_eat;
-	int		_time_to_sleep;
-	int		_meals;
-	int		option;
-	int		id;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	*event;
-	int				start;
-	// int				last_eat;
-	pthread_t		philo;	
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	*print;
-	char			*end;
-	char			end_both;
-
+	int				n_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals; 
+	long			start_time;
+	int				*is_dead; //malloctan kurtar
+	pthread_t		*id;
+	pthread_mutex_t	*mutex;
+	pthread_mutex_t	*print_mutex;
+	int				i;
+	int				lfork;
+	int				rfork;
+	long			time_left;
 }	t_philo;
 
-int		get_args_helper(char *argv, long long *nbr);
-void	required_args(char **argv, t_philo *args, long long nbr);
-void	optional_args(char **argv, t_philo *args, long long nbr);
-int		get_args(int argc, char **argv, t_philo *args);
 
-int		init_philo(t_philo	*philo);
-int		init_mutex(t_philo *philo);
+// parser
+int			if_correctinput(char **argv);
+int			args_helper(char *argv, long long *nbr);
+void		required_args(char **argv, t_philo *args, long long nbr);
+void		optional_args(char **argv, t_philo *philo, long long nbr);
+int			parser(int argc, char **argv, t_philo *philo);
 
-unsigned long long	gettimeofday_ms(void);
-void	usleep_ms(unsigned long long t);
-int	if_simulation_end(t_philo *philo);
-void	*philo_routine(void *philo);
-int	simulation(t_philo *philo);
+// initilization
+long		gettimeofday_ms(long now);
+int			initialize(t_philo *philo);
 
+// tasks
+static void	ft_eat(t_philo *philo);
+static void	ft_sleep_think(t_philo *philo);
+void		ft_tasks(t_philo *philo);
+void		death_monitor(t_philo *philo);
+void		ft_print(t_philo *philo, char *str);
 
-static void	take_left_fork(t_philo *philo);
-static void	take_right_fork(t_philo *philo);
-static int	ft_eat(t_philo *philo);
-static int	ft_sleep(t_philo *philo);
-static int	ft_think(t_philo *philo);
+// simulation
+int			simulation(t_philo *philo);
+long		check_time(long start_time);
+void		assign_forks(t_philo *philo);
+void		*routine(void *philo);
 
-int		checker(t_philo *philo, int philo_dies, int i);
-void	*death_monitor(void *_philo);
-
+// utils
 int	ft_isdigit(char c);
 int	ft_strlen(const char *s);
 static int	ft_isspace(char c);

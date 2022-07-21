@@ -1,79 +1,55 @@
 #include "../inc/philo.h"
 
-unsigned long long	gettimeofday_ms(void)
+long	check_time(long start_time)
 {
-	struct timeval	tv;
+	long			time;
 
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	time = gettimeofday_ms(time);
+	return (time - start_time);
 }
 
-void	usleep_ms(unsigned long long t)
+void	assign_forks(t_philo *philo)
 {
-	unsigned long long	start;
-
-	start = gettimeofday_ms();
-	while (gettimeofday_ms() - start <= t)
-		usleep(1000);
+	philo->lfork = philo->i;
+	if (philo->i == philo->n_philos)
+		philo->rfork = 1;
+	else
+		philo->rfork = philo->i + 1;
 }
 
-int	if_simulation_end(t_philo *philo)
+void	*routine(void *philo)
 {
-	int	result;
+	struct timeval	current;
+	t_philo			_philo;
 
-	pthread_mutex_lock(philo->print);
-	result = *(philo->end);
-	pthread_mutex_unlock(philo->print);
-	return (result);
-}
 
-void	*philo_routine(void *_philo)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)_philo;
-	if (philo->id % 2 == 0)
-		usleep(1000);
+	_philo = *(t_philo *) philo;
+	assign_forks(&_philo);
 	while (1)
 	{
-		if (ft_eat(philo))
-			return (NULL);
-		if (ft_sleep(philo))
-			return (NULL);
-		if (ft_think(philo))
-			return (NULL);
+		if (check_time(_philo.start_time) >= 1000)
+			break ;
+		usleep (1000);
 	}
+	_philo.start_time = gettimeofday_ms(_philo.start_time);
+	_philo.time_left = _philo.start_time + _philo.time_to_die;
+	ft_tasks(&_philo);
 }
 
 int	simulation(t_philo *philo)
 {
-	unsigned int		i;
-	unsigned long long	beginning;
-	pthread_t			watcher;			
-
-	i = 0;
-	while (i < philo->_philos)
+	philo->i = 1;
+	while (philo->i <= philo->n_philos)
 	{
-		beginning = gettimeofday_ms();
-		philo[i].start = beginning;
-		philo[i].last_eat = beginning;
-		if(pthread_create(&(philo[i].philo), NULL, philo_routine, &philo[i]) != 0)
-		{
-			pthread_mutex_lock(philo->print);
-			philo->end_both = 1;
-			pthread_mutex_unlock(philo->print);
-	// 		pthread_join(*observer, NULL);
-	// while (i--)
-	// 	pthread_join(philo_arg[i].philo, NULL);
-	// 		return(-1);
-		}
-		i++;
+		pthread_create(&philo->id[philo->i], NULL, routine, philo);
+		usleep(1000);
+		philo->i++;
 	}
-	if(pthread_create(&watcher, NULL, death_monitor, philo))
-		return(if_simulation_end(philo));
-	if (watcher != NULL)
-		pthread_join(watcher, NULL);
-	while (i--)
-		pthread_join(philo[i]._philos, NULL);
+	philo->i = 1;
+	while (philo->i <= philo->n_philos)
+	{
+		pthread_join(philo->id[philo->i], NULL);
+		philo->i++;
+	}
 	return (1);
 }

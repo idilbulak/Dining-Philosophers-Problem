@@ -12,8 +12,8 @@ INCLUDES		=	./inc/
 AR				=	ar
 ARFLAGS			=	rcs
 
-SRCS_F			=	philo.c philo_utils.c get_args.c init_philo.c \
-					simulation.c simulation_utils.c death_monitor.c
+SRCS_F			=	philo.c philo_utils.c parser.c initialize.c \
+					simulation.c tasks.c
 
 SRCS			= 	$(addprefix $(SRCS_DIR), $(SRCS_F))
 

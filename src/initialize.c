@@ -1,86 +1,37 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   initialize.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: ibulak <ibulak@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/06/27 13:06:41 by ibulak        #+#    #+#                 */
-/*   Updated: 2022/06/27 17:45:22 by ibulak        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../inc/philo.h"
 
-int	initialize(t_philo *args)
+long	gettimeofday_ms(long time)
 {
-	if (init_philo(args) == -1)
-	{
-		free(args);
-		error_input();
-		return (-1);
-	}
-	if (init_mutex(args) == -1)
-	{
-		free(args);
-		error_input();
-		return (-1);
-	}
-	return (1);
+	struct timeval	current;
+
+	gettimeofday(&current, NULL);
+	time= (current.tv_sec * 1000) + (current.tv_usec / 1000);
+	return (time);
 }
 
-int	init_philo(t_philo	*philo)
+int	initialize(t_philo	*philo)
 {
 	int	i;
 
-	philo = (t_philo *)malloc(sizeof(t_philo) * philo->_philos);
-	if (!philo)
-		return (-1);
-	philo->end_both = 0;
 	i = 0;
-	while (i < philo->_philos)
+	philo->start_time = gettimeofday_ms(philo->start_time) + 1000;
+	philo->id = malloc((philo->n_philos + 1) * sizeof(pthread_t));
+	if (!philo->id)
+		return (-1);
+	philo->is_dead = malloc(sizeof(int));
+	philo->is_dead[0] = 1;
+	philo->mutex = malloc((philo->n_philos + 1) * sizeof(pthread_mutex_t));
+	if (!philo->mutex)
+		return (-1);
+	while (i <= philo->n_philos)
 	{
-		philo[i].id = i + 1;
-		philo[i].end = &(philo->end_both);
-		philo[i].left_fork = &(philo[i].forks);
-		philo[i].right_fork = &(philo[(i + 1) % philo->_philos].forks);
-		philo[i]._meals = 0;
+		pthread_mutex_init(&philo->mutex[i], NULL);
 		i++;
 	}
+	philo->print_mutex = malloc(sizeof(pthread_mutex_t));
+	if (!philo->print_mutex)
+		return (-1);
+	pthread_mutex_init(&philo->print_mutex[0], NULL);
 	return (1);
 }
 
-int	init_mutex(t_philo *philo)
-{
-	unsigned int	i;
-
-	if(pthread_mutex_init(&(philo->print), NULL) != 0)
-		// return(-1);
-	i = 0;
-	while(i < philo->_philos)
-	{
-		if (pthread_mutex_init(philo[i]->forks, NULL) != 0)
-		{
-			while(i)
-			{
-				pthread_mutex_destroy(philo[i].forks);
-				i--;
-			}
-			pthread_mutex_destroy(&(philo->print));
-			return(-1);
-		}
-		// if(pthread_mutex_init(philo[i]->event, NULL) != 0)
-		{
-			while(i)
-			{
-				pthread_mutex_destroy(philo[i].forks);
-				pthread_mutex_destroy(philo[i].event);
-				i--;
-			}
-			pthread_mutex_destroy(&(philo->print));
-			return(-1);
-		}
-		i++;
-	}
-	return(1);
-}
