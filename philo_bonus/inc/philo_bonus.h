@@ -22,7 +22,7 @@ typedef struct s_philo
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meals; 
-	int     		*id;
+	int     		*pid;
 	long			start_time;
 	int				i;
 	long			time_left;

@@ -1,5 +1,30 @@
 #include "../inc/philo_bonus.h"
 
+int	invalid_input(int i, char **argv)
+{
+	int j;
+
+	if (i != 5 && i != 6)
+		return (1);
+	i = 1;
+	while(argv[i])
+	{
+		j = 0;
+		while(argv[i][j])
+		{
+			if(argv[i][j] == '-')
+				return (1);
+			if(!ft_isdigit(argv[i][j]))
+				return(1);
+			j++;
+		}
+		if (ft_atoi(argv[i]) > MAX_INT)
+			return (1);
+		i++;
+	}
+	return(0);
+}
+
 void	ft_terminate(t_philo *philo)
 {
 	free(philo->id);
@@ -16,24 +41,26 @@ void	ft_terminate(t_philo *philo)
 
 int	main (int argc, char** argv)
 {
-	t_philo	*philo;
+	t_philo	p;
 
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
-		return (-1);
-	if(parser(argc, argv, philo) == -1)
-		return(-1);
-	if (philo->n_philos == 1)
+	if(invalid_input(argc, argv))
+		return(1);
+	p = parser(argc, argv, p);
+	if (p.n_philos == 0)
+		return (1);
+	else if (p.n_philos == 1)
 	{
 		printf("0 1 has taken a fork\n");
-		usleep(philo->time_left * 1000);
-		printf("%lu 1 died\n", philo->time_left);
-		return (-1);
+		usleep(p.time_to_die * 1000);
+		printf("%d 1 died\n", p.time_to_die);
 	}
-	if(initialize(philo) == -1)
-		return(-1);
-	if(simulation(*philo) == -1)
-		return (-1);
-	ft_terminate(philo);
-	return (1);	
+	else
+	{
+		if (ft_initialize(&p))
+			return (1);
+		if(simulation(*&p) == -1)
+			return (1);
+		ft_terminate(&p);
+	}
+	return (0);
 }
