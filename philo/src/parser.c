@@ -1,159 +1,34 @@
 #include "../inc/philo.h"
 
-int	if_correctinput(char **argv)
+int	ft_isdigit(char c)
 {
-	int i;
-	int j;
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
 
-	i = 1;
-	while(argv[i])
+long	ft_atoi(char *argv)
+{
+	long	nbr;
+
+	nbr = 0;
+	while (ft_isdigit(*argv))
 	{
-		j = 0;
-		while(argv[i][j])
-		{
-			if(argv[i][j] == '-')
-				return (-1);
-			if(!ft_isdigit(argv[i][j]))
-				return(-1);
-			j++;
-		}
-		i++;
+		nbr = nbr * 10 + (*argv - '0');
+		argv++;
 	}
-	return(1);
+	return (nbr);
 }
 
-int	args_helper(char *argv, long long *nbr)
+t_philo	parser(int argc, char **argv, t_philo p)
 {
-	int	i;
-
-	i = 0;
-	while (ft_isdigit(argv[i]))
-	{
-		*nbr = *nbr * 10 + (argv[i] - '0');
-		i++;
-	}
-	if (*nbr > MAX_INT)
-		return(-1);
-	return(1);
+	p.n_philos = (int)ft_atoi(argv[1]);
+	p.time_to_die = (int)ft_atoi(argv[2]);
+	p.time_to_eat = (int)ft_atoi(argv[3]);
+	p.time_to_sleep = (int)ft_atoi(argv[4]);
+	if (argc == 6)
+		p.meals = (int)ft_atoi(argv[5]);
+	else
+		p.meals = -1;
+	return (p);
 }
-
-void	required_args(char **argv, t_philo *args, long long nbr)
-{
-	if(args_helper(argv[1], &nbr))
-		args->n_philos = nbr;
-	nbr = 0;
-	if(args_helper(argv[2], &nbr))
-		args->time_to_die = nbr;
-	nbr = 0;
-	if(args_helper(argv[3], &nbr))
-		args->time_to_eat = nbr;
-	nbr = 0;
-	if(args_helper(argv[4], &nbr))
-		args->time_to_sleep = nbr;
-	args->meals = 0;
-}
-
-void	optional_args(char **argv, t_philo *args, long long nbr)
-{
-	if(args_helper(argv[1], &nbr))
-		args->n_philos = nbr;
-	nbr = 0;
-	if(args_helper(argv[2], &nbr))
-		args->time_to_die = nbr;
-	nbr = 0;
-	if(args_helper(argv[3], &nbr))
-		args->time_to_eat = nbr;
-	nbr = 0;
-	if(args_helper(argv[4], &nbr))
-		args->time_to_sleep = nbr;
-	nbr = 0;
-	if(args_helper(argv[5], &nbr))
-		args->meals = nbr;
-}
-
-int	parser(int argc, char **argv, t_philo *args)
-{
-	long long nbr;
-
-	nbr = 0;
-	if(argc == 5)
-	{
-		required_args(argv, args, nbr);
-		return(1);
-	}
-	if(argc == 6)
-	{
-		optional_args(argv, args, nbr);
-		return(1);
-	}
-	return(-1);
-}
-
-// int	parser_helper(char *argv, long nbr)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (ft_isdigit(argv[i]))
-// 	{
-// 		nbr = nbr * 10 + (argv[i] - '0');
-// 		i++;
-// 	}
-// 	// if (nbr > MAX_INT)
-// 	// 	return(-1);
-// 	return(nbr);
-// }
-
-// void	required_args(char **argv, t_philo *philo, long nbr)
-// {
-// 		philo->n_philos = parser_helper(argv[1], nbr);
-// 		printf("error %d\n", nbr);
-// 	nbr = 0;
-// 	if(parser_helper(argv[2], nbr))
-// 		philo->time_to_die = nbr;
-// 	nbr = 0;
-// 	if(parser_helper(argv[3], nbr))
-// 		philo->time_to_eat = nbr;
-// 	nbr = 0;
-// 	if(parser_helper(argv[4], nbr))
-// 		philo->time_to_sleep = nbr;
-// 	philo->meals = 0;
-// }
-
-// void	optional_args(char **argv, t_philo *philo, long nbr)
-// {
-// 	if(parser_helper(argv[1], &nbr))
-// 		philo->n_philos = nbr;
-// 	nbr = 0;
-// 	if(parser_helper(argv[2], &nbr))
-// 		philo->time_to_die = nbr;
-// 	nbr = 0;
-// 	if(parser_helper(argv[3], &nbr))
-// 		philo->time_to_eat = nbr;
-// 	nbr = 0;
-// 	if(parser_helper(argv[4], &nbr))
-// 		philo->time_to_sleep = nbr;
-// 	nbr = 0;
-// 	if(parser_helper(argv[5], &nbr))
-// 		philo->meals = nbr;
-// }
-
-// int	parser(int argc, char **argv, t_philo *philo)
-// {
-// 	long  nbr;
-
-// 	nbr = 0;
-// 	if (if_correctinput(argv) == -1)
-// 		return(-1);
-// 	if(argc == 5)
-// 	{
-// 		required_args(argv, philo, nbr);
-// 		return(1);
-// 	}
-// 	if(argc == 6)
-// 	{
-// 		optional_args(argv, philo, nbr);
-// 		return(1);
-// 	}
-// 	return(-1);
-// }

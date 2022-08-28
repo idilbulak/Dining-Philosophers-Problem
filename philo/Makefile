@@ -1,7 +1,6 @@
 GREEN = \033[32m
-BLUE = \033[34m
-YELLOW = \e[0;33m
-RESET = \033[0m
+CYAN = \033[0;36m
+PURPLE = \033[0;35m
 
 NAME			=	philo
 
@@ -9,18 +8,21 @@ SRCS_DIR		=	./src/
 
 INCLUDES		=	./inc/
 
-AR				=	ar
-ARFLAGS			=	rcs
-
-SRCS_F			=	philo.c philo_utils.c parser.c initialize.c \
-					simulation.c tasks.c
+SRCS_F			=	philo.c \
+					parser.c \
+					death_monitor.c \
+					initialize.c \
+					routine.c \
+					terminate.c \
+					time.c \
+					philo_utils.c \
 
 SRCS			= 	$(addprefix $(SRCS_DIR), $(SRCS_F))
 
 OBJS			=	$(SRCS:.c=.o)
 
 CC				=	gcc
-CC_FLAGS		= 	-Wall -Wextra -Werror -lpthread
+CC_FLAGS		= 	-Wall -Wextra -Werror
 
 .c.o:			
 				$(CC) $(C_FLAGS) -c $< -o $(<:.c=.o)
@@ -28,7 +30,11 @@ CC_FLAGS		= 	-Wall -Wextra -Werror -lpthread
 
 $(NAME):		$(OBJS)
 				$(CC) $(CC_FLAGS) $(OBJS) -o $(NAME)
-				@echo "$(GREEN)Philosophers are starving!$(RESET)"
+				@echo "$(GREEN)*---------------------------------------------------------*$(RESET)"
+				@echo "$(GREEN)|\t\t$(CYAN)Dining Philosophers Problem\t\t  $(GREEN)|$(RESET)"
+				@echo "$(GREEN)|  $(PURPLE)<n_philos> <time_to_die> <time_to_eat> <time_to_sleep> $(GREEN)|$(RESET)"
+				@echo "$(GREEN)*---------------------------------------------------------*$(RESET)"
+
 
 all:			$(NAME)
 
