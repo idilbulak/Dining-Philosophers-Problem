@@ -26,6 +26,7 @@ typedef struct s_philo
 	int				time_to_sleep;
 	int				meals; 
 	long			start_time;
+	long			time_left;
 	pthread_t		*thread;
 	int				*is_dead; //malloctan kurtar
 	int				i;
@@ -33,7 +34,6 @@ typedef struct s_philo
 	pthread_mutex_t	*print_mutex;
 	int				lfork;
 	int				rfork;
-	long			time_left;
 }	t_philo;
 
 //parser

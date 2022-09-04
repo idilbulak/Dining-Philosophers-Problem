@@ -30,6 +30,7 @@ void	ft_sleep_think(t_philo *ph)
 		if (time_check(time) > ph->time_to_sleep)
 			break ;
 	}
+	ft_print(ph, GREEN, "is thinking");
 }
 
 void    *routine(void   *p)
@@ -49,14 +50,13 @@ void    *routine(void   *p)
 	}
 	ph.start_time = gettimeofday_ms(ph.start_time);
 	ph.time_left = ph.start_time + ph.time_to_die;
-	if (ph.i % 2 == 0)
+	if (ph.i % 2 == 1)
 		usleep(1000);
 	while (ph.is_dead[0])
 	{
-		ft_print(&ph, GREEN, "is thinking");
 		pthread_mutex_lock(&ph.mutex[ph.rfork]);
 		ft_print(&ph, YELLOW, "has taken a fork");
-		// usleep (50);
+		usleep (50);
 		pthread_mutex_lock(&ph.mutex[ph.lfork]);
 		ft_print(&ph, YELLOW, "has taken a fork");
 		ft_eat(&ph);

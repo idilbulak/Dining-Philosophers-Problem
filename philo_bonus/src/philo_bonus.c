@@ -25,42 +25,58 @@ int	invalid_input(int i, char **argv)
 	return(0);
 }
 
-void	ft_terminate(t_philo *philo)
+void	ft_kill(t_philo ph)
 {
-	free(philo->id);
-	sem_unlink("/sem");
-	sem_unlink("/print_sem");
-	sem_unlink("/death");
-	sem_unlink("/start");
-	sem_close(philo->sem);
-	sem_close(philo->print_sem);
-	sem_close(philo->death);
-	sem_close(philo->start);
-	free(philo);
+	size_t	i;
+
+	i = 1;
+	while (i <= ph.n_philos)
+	{
+		kill(ph.pid[i], SIGKILL);
+		i++;
+	}
 }
 
-int	main (int argc, char** argv)
+int	main(int argc, char **argv)
 {
-	t_philo	p;
+	t_philo	ph;
+	int		status;
 
-	if(invalid_input(argc, argv))
-		return(1);
-	p = parser(argc, argv, p);
-	if (p.n_philos == 0)
+	if (invalid_input(argc, argv))
 		return (1);
-	else if (p.n_philos == 1)
+	ph = parser(argc, argv, ph);
+	if (ph.n_philos == 0)
+		return (1);
+	else if (ph.n_philos == 1)
 	{
 		printf("0 1 has taken a fork\n");
-		usleep(p.time_to_die * 1000);
-		printf("%d 1 died\n", p.time_to_die);
+		usleep(ph.time_to_die * 1000);
+		printf("%d 1 died\n", ph.time_to_die);
+		return(1);
 	}
 	else
 	{
-		if (ft_initialize(&p))
-			return (1);
-		if(simulation(*&p) == -1)
-			return (1);
-		ft_terminate(&p);
+		ft_initialize(&ph);
+		ph.i = 1;
+		while (ph.i <= ph.n_philos)
+		{
+			ph.pid[ph.i] = fork();
+			if (ph.pid[ph.i] == 0)
+				simulation(&ph);
+			ph.i++;
+		}
+		ph.i = 1;
+		while (ph.i <= ph.n_philos)
+		{
+			waitpid(-1, &status, 0);
+			if (status != 0)
+			{
+				ft_kill(ph);
+				break ;
+			}
+			ph.i++;
+		}
 	}
+	ft_terminate(&ph);
 	return (0);
 }

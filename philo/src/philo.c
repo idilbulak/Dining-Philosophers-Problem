@@ -27,37 +27,38 @@ int	invalid_input(int i, char **argv)
 
 int main(int argc, char **argv)
 {
-	t_philo p;
+	t_philo ph;
 
 	if (invalid_input(argc, argv))
 		return (1);
-	p = parser(argc, argv, p);
-	if (p.n_philos == 0)
+	ph = parser(argc, argv, ph);
+	if (ph.n_philos == 0)
 		return (1);
-	else if (p.n_philos == 1)
+	else if (ph.n_philos == 1)
 	{
 		printf("0 1 has taken a fork\n");
-		usleep(p.time_to_die * 1000);
-		printf("%d 1 died\n", p.time_to_die);
+		usleep(ph.time_to_die * 1000);
+		printf("%d 1 died\n", ph.time_to_die);
+		return(1);
 	}
 	else
 	{
-		if (ft_initialize(&p))
+		if (ft_initialize(&ph))
 			return (1);
-		p.i = 1;
-		while (p.i <= p.n_philos)
+		ph.i = 1;
+		while (ph.i <= ph.n_philos)
 		{
-			pthread_create(&p.thread[p.i], NULL, routine, &p);
+			pthread_create(&ph.thread[ph.i], NULL, routine, &ph);
 			usleep(100);
-			p.i++;
+			ph.i++;
 		}
-		p.i = 1;
-		while (p.i <= p.n_philos)
+		ph.i = 1;
+		while (ph.i <= ph.n_philos)
 		{
-			pthread_join(p.thread[p.i], NULL);
-			p.i++;
+			pthread_join(ph.thread[ph.i], NULL);
+			ph.i++;
 		}
-		ft_terminate(&p);
+		ft_terminate(&ph);
+		return (0);
 	}
-	return (0);
 }
