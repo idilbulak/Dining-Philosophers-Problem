@@ -25,7 +25,7 @@ SRCS			= 	$(addprefix $(SRCS_DIR), $(SRCS_F))
 OBJS			=	$(SRCS:.c=.o)
 
 CC				=	gcc
-CC_FLAGS		= 	-Wall -Wextra -Werror -fsanitize=thread
+CC_FLAGS		= 	-Wall -Wextra -Werror
 
 .c.o:			
 				$(CC) $(C_FLAGS) -c $< -o $(<:.c=.o)

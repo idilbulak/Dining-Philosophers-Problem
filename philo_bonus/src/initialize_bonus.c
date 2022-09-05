@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   initialize_bonus.c                                 :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibulak <ibulak@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/05 12:40:22 by ibulak        #+#    #+#                 */
+/*   Updated: 2022/09/05 12:40:26 by ibulak        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo_bonus.h"
 
 void	ft_initialize(t_philo *ph)
@@ -18,4 +30,3 @@ void	ft_initialize(t_philo *ph)
 	|| ph->sem_isdead == SEM_FAILED || ph->sem_last == SEM_FAILED)
 		exit(1);
 }
-

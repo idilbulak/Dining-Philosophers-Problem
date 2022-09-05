@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   simulation_bonus.c                                 :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: ibulak <ibulak@student.codam.nl>             +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/09/05 12:45:56 by ibulak        #+#    #+#                 */
+/*   Updated: 2022/09/05 12:47:03 by ibulak        ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo_bonus.h"
 
-void	simulation(t_philo *ph)
+void	routine(t_philo *ph)
 {
 	if (ph->i != ph->n_philos)
 		sem_wait(ph->sem_last);
@@ -12,10 +24,10 @@ void	simulation(t_philo *ph)
 	while (1)
 	{
 		sem_wait(ph->sem_forks);
-		ft_print(ph, YELLOW, "has taken a fork");
+		ft_print(ph, CYAN, "has taken a fork");
 		usleep(50);
 		sem_wait(ph->sem_forks);
-		ft_print(ph, YELLOW, "has taken a fork");
+		ft_print(ph, CYAN, "has taken a fork");
 		ft_eat(ph);
 		sem_post(ph->sem_forks);
 		sem_post(ph->sem_forks);
@@ -31,7 +43,7 @@ void	ft_eat(t_philo *ph)
 	long	time;
 
 	time = gettimeofday_ms(time);
-	ft_print(ph, CYAN, "is eating");
+	ft_print(ph, YELLOW, "is eating");
 	while (1)
 	{
 		usleep(200);
@@ -49,7 +61,7 @@ void	ft_sleep_think(t_philo *ph)
 	long	time;
 
 	time = gettimeofday_ms(time);
-		ft_print(ph, PURPLE, "is sleeping");
+	ft_print(ph, PURPLE, "is sleeping");
 	while (1)
 	{
 		usleep(200);
