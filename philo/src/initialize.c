@@ -6,41 +6,43 @@
 /*   By: ibulak <ibulak@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 10:37:19 by ibulak        #+#    #+#                 */
-/*   Updated: 2022/09/05 11:39:21 by ibulak        ########   odam.nl         */
+/*   Updated: 2022/09/06 12:26:42 by ibulak        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-int	ft_init_mutex(t_philo *p)
+int	ft_init_mutex(t_philo *ph)
 {
 	int	i;
 
 	i = 0;
-	p->mutex = malloc((p->n_philos + 1) * sizeof(pthread_mutex_t));
-	if (!p->mutex)
+	ph->mutex = malloc((ph->n_philos + 1) * sizeof(pthread_mutex_t));
+	if (!ph->mutex)
 		return (1);
-	while (i <= p->n_philos)
+	while (i <= ph->n_philos)
 	{
-		pthread_mutex_init(&p->mutex[i], NULL);
+		pthread_mutex_init(&ph->mutex[i], NULL);
 		i++;
 	}
-	p->print_mutex = malloc(sizeof(pthread_mutex_t));
-	if (!p->print_mutex)
+	ph->print_mutex = malloc(sizeof(pthread_mutex_t));
+	if (!ph->print_mutex)
 		return (1);
-	pthread_mutex_init(&p->print_mutex[0], NULL);
+	pthread_mutex_init(&ph->print_mutex[0], NULL);
 	return (0);
 }
 
-int	ft_initialize(t_philo *p)
+int	ft_initialize(t_philo *ph)
 {
-	p->start_time = gettimeofday_ms(p->start_time) + 1000;
-	p->thread = malloc((p->n_philos + 1) * sizeof(pthread_t));
-	if (!p->thread)
+	ph->start_time = gettimeofday_ms(ph->start_time) + 1000;
+	ph->thread = malloc((ph->n_philos + 1) * sizeof(pthread_t));
+	if (!ph->thread)
 		return (-1);
-	p->is_dead = malloc(sizeof(int));
-	p->is_dead[0] = 1;
-	if (ft_init_mutex(p))
+	ph->is_dead = malloc(sizeof(int));
+	if (!ph->is_dead)
+		return (-1);
+	ph->is_dead[0] = 1;
+	if (ft_init_mutex(ph))
 		return (1);
 	return (0);
 }

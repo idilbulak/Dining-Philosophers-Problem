@@ -6,11 +6,20 @@
 /*   By: ibulak <ibulak@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 11:39:39 by ibulak        #+#    #+#                 */
-/*   Updated: 2022/09/05 11:40:20 by ibulak        ########   odam.nl         */
+/*   Updated: 2022/09/06 12:24:21 by ibulak        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
+
+t_philo	assign_forks(t_philo ph)
+{
+	ph.lfork = ph.i;
+	ph.rfork = ph.i + 1;
+	if (ph.i == ph.n_philos)
+		ph.rfork = 1;
+	return (ph);
+}
 
 void	ft_print(t_philo *ph, char *color, char *str)
 {

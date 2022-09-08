@@ -6,11 +6,36 @@
 /*   By: ibulak <ibulak@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 12:40:39 by ibulak        #+#    #+#                 */
-/*   Updated: 2022/09/05 12:40:40 by ibulak        ########   odam.nl         */
+/*   Updated: 2022/09/06 15:00:33 by ibulak        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo_bonus.h"
+
+int	invalid_input(int i, char **argv)
+{
+	int	j;
+
+	if (i != 5 && i != 6)
+		return (1);
+	i = 1;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] == '-')
+				return (1);
+			if (!ft_isdigit(argv[i][j]))
+				return (1);
+			j++;
+		}
+		if (ft_atoi(argv[i]) > MAX_INT)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	ft_isdigit(char c)
 {

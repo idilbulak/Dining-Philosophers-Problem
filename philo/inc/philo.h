@@ -6,7 +6,7 @@
 /*   By: ibulak <ibulak@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 12:28:39 by ibulak        #+#    #+#                 */
-/*   Updated: 2022/09/05 12:29:34 by ibulak        ########   odam.nl         */
+/*   Updated: 2022/09/06 12:25:58 by ibulak        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,35 @@ typedef struct s_philo
 	int				rfork;
 }	t_philo;
 
+//parser
+int		invalid_input(int i, char **argv);
 long	ft_atoi(char *argv);
 int		ft_isdigit(char c);
-t_philo	parser(int argc, char **argv, t_philo p);
+t_philo	parser(int argc, char **argv, t_philo ph);
+
+//initialize
 int		ft_initialize(t_philo *p);
+int		ft_init_mutex(t_philo *p);
+
+//death monitor
 void	death_monitor(t_philo *ph);
+
+//simulation
+void	simulation(t_philo ph);
 void	*routine(void *p);
-void	ft_terminate(t_philo *p);
-long	time_check(long time);
-long	gettimeofday_ms(long time);
+void	ft_tasks(t_philo ph);
+void	ft_eat(t_philo *ph);
+void	ft_sleep_think(t_philo *ph);
+
+//utils
+t_philo	assign_forks(t_philo ph);
 void	ft_print(t_philo *ph, char *color, char *str);
+
+//terminate
+void	ft_terminate(t_philo *p);
+
+//time
+long	gettimeofday_ms(long time);
+long	time_check(long time);
 
 #endif
